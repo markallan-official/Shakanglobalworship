@@ -15,9 +15,9 @@
     --electric-blue: #2255CC;
     --deep-purple: #1E0A3C;
     --rich-purple: #3D1278;
-    --fire-orange: #E8520A;
-    --warm-amber: #D4820A;
-    --crimson-red: #8B1A1A;
+    --fire-orange: #1B6E8F;
+    --warm-amber: #0B7FA8;
+    --crimson-red: #0A4F6F;
     --cream-white: #FAF6EC;
     --soft-white: #F5F0E8;
     --text-light: #FFFFFF;
@@ -28,7 +28,7 @@
     --border-gold: rgba(200, 150, 12, 0.35);
     --gradient-hero: linear-gradient(135deg, #0A0E2A 0%, #1E0A3C 35%, #0D1B4B 65%, #0A0E2A 100%);
     --gradient-gold: linear-gradient(135deg, #8B6000 0%, #C8960C 50%, #F0C040 100%);
-    --gradient-fire: linear-gradient(180deg, #F0C040 0%, #E8520A 60%, #8B1A1A 100%);
+    --gradient-fire: linear-gradient(180deg, #0B5C7E 0%, #1B7FA8 60%, #0A3D5C 100%);
     --gradient-section: linear-gradient(180deg, #0A0E2A 0%, #0D1B4B 100%);
 
     --font-display: 'Cinzel Decorative', serif;
@@ -264,13 +264,13 @@ nav.scrolled {
 
 /* ===== EVENT BANNER ===== */
 .event-banner {
-    background: linear-gradient(135deg, rgba(11, 58, 93, 0.95), rgba(15, 85, 140, 0.9), rgba(30, 120, 160, 0.85));
-    border: 2px solid rgba(30, 180, 220, 0.6);
+    background: linear-gradient(135deg, rgba(11, 92, 126, 0.95), rgba(27, 110, 143, 0.85), rgba(10, 79, 111, 0.9));
+    border: 2px solid var(--warm-amber);
     border-radius: 12px;
     padding: 2rem;
     text-align: center;
     margin: 70px 2rem 1rem 2rem;
-    animation: pulse-glow-blue 2s ease-in-out infinite;
+    animation: pulse-border 2s ease-in-out infinite;
     position: relative;
     overflow: hidden;
 }
@@ -282,7 +282,7 @@ nav.scrolled {
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(45deg, transparent 30%, rgba(100, 220, 255, 0.08) 50%, transparent 70%);
+    background: linear-gradient(45deg, transparent 30%, rgba(100, 200, 255, 0.1) 50%, transparent 70%);
     animation: shimmer 3s infinite;
 }
 
@@ -293,19 +293,17 @@ nav.scrolled {
 
 .event-banner h3 {
     font-size: 1.5rem;
-    color: #64DCFF;
+    color: var(--gold-light);
     margin-bottom: 0.5rem;
     text-transform: uppercase;
     letter-spacing: 2px;
-    text-shadow: 0 0 15px rgba(100, 220, 255, 0.4);
 }
 
 .event-banner-text {
     font-size: 2rem;
-    color: #FFFFFF;
+    color: var(--text-light);
     margin: 1rem 0;
     font-weight: 700;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
 .event-countdown {
@@ -317,23 +315,23 @@ nav.scrolled {
 }
 
 .countdown-item {
-    background: rgba(100, 220, 255, 0.15);
+    background: rgba(255, 255, 255, 0.1);
     padding: 0.75rem 1.5rem;
     border-radius: 8px;
-    border: 1px solid rgba(100, 220, 255, 0.5);
+    border: 1px solid var(--gold-primary);
 }
 
 .countdown-number {
     font-size: 1.8rem;
     font-weight: 700;
-    color: #64DCFF;
+    color: var(--gold-light);
     display: block;
 }
 
 .countdown-label {
     font-size: 0.75rem;
     text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--text-muted);
     margin-top: 0.25rem;
 }
 
@@ -346,10 +344,10 @@ nav.scrolled {
 }
 
 .btn-secondary {
-    background: rgba(100, 220, 255, 0.15);
-    color: #64DCFF;
+    background: rgba(255, 255, 255, 0.15);
+    color: var(--gold-light);
     padding: 0.75rem 1.5rem;
-    border: 2px solid rgba(100, 220, 255, 0.6);
+    border: 2px solid var(--gold-primary);
     border-radius: 25px;
     font-size: 0.9rem;
     text-transform: uppercase;
@@ -359,10 +357,10 @@ nav.scrolled {
 }
 
 .btn-secondary:hover {
-    background: rgba(100, 220, 255, 0.3);
-    color: #FFFFFF;
+    background: var(--gold-primary);
+    color: var(--text-dark);
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(100, 220, 255, 0.3);
+    box-shadow: 0 8px 20px rgba(200, 150, 12, 0.3);
 }
 
 @media (max-width: 480px) {
@@ -373,18 +371,6 @@ nav.scrolled {
 
     .event-banner-text {
         font-size: 1.3rem;
-    }
-
-    .event-banner h3 {
-        font-size: 1.1rem;
-    }
-
-    table {
-        font-size: 0.85rem !important;
-    }
-
-    table td {
-        padding: 0.75rem !important;
     }
 
     .event-countdown {
@@ -1121,17 +1107,6 @@ footer {
     }
 }
 
-@keyframes pulse-glow-blue {
-    0%,
-    100% {
-        box-shadow: 0 0 5px rgba(100, 220, 255, 0.4), 0 0 15px rgba(30, 180, 220, 0.2);
-    }
-
-    50% {
-        box-shadow: 0 0 15px rgba(100, 220, 255, 0.6), 0 0 30px rgba(30, 180, 220, 0.4);
-    }
-}
-
 @keyframes drift {
 
     0%,
@@ -1399,6 +1374,67 @@ footer {
         bottom: 20px;
         right: 20px;
         font-size: 1.2rem;
+    }
+}
+
+/* ===== TABLE RESPONSIVE STYLES ===== */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    overflow-x: auto;
+    display: block;
+}
+
+table td {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+}
+
+@media (max-width: 768px) {
+    table {
+        font-size: 0.9rem;
+    }
+
+    table td {
+        padding: 0.75rem !important;
+        word-break: break-word;
+    }
+}
+
+@media (max-width: 480px) {
+    table {
+        font-size: 0.8rem;
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    table tr {
+        display: block;
+        margin-bottom: 1rem;
+        border: 1px solid var(--border-gold);
+        border-radius: 8px;
+        padding: 1rem;
+    }
+
+    table td {
+        padding: 0.5rem !important;
+        display: block;
+        width: 100%;
+        text-align: left;
+        margin-bottom: 0.5rem;
+        word-break: break-word;
+    }
+
+    table td:before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: var(--gold-light);
+        margin-right: 0.5rem;
+        display: block;
+        font-size: 0.85rem;
+        margin-bottom: 0.25rem;
     }
 }
 
