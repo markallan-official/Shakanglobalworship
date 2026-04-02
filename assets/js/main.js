@@ -251,8 +251,13 @@ function initHamburgerMenu() {
     if (!hamburger) return;
 
     hamburger.addEventListener('click', () => {
-        hamburger.classList.toggle('open');
-        navLinks.classList.toggle('active');
+        // Navigate to menu page on mobile
+        if (window.innerWidth <= 768) {
+            window.location.href = 'menu.html';
+        } else {
+            hamburger.classList.toggle('open');
+            navLinks.classList.toggle('active');
+        }
     });
 
     // Close menu on link click
