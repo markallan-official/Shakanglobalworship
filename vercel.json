@@ -1,0 +1,16 @@
+{
+    "buildCommand": "",
+    "devCommand": "npx http-server -p 3000",
+    "installCommand": "npm install",
+    "framework": "static",
+    "outputDirectory": ".",
+    "env": {},
+    "alias": [
+        "shakanglobalworship.com"
+    ],
+    "public": true,
+    "projectSettings": {
+        "rootDirectory": "/",
+        "framework": "static"
+    }
+}
