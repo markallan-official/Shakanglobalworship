@@ -268,7 +268,7 @@ nav.scrolled {
 
 /* ===== EVENT BANNER ===== */
 .event-banner {
-    background: linear-gradient(135deg, rgba(11, 92, 126, 0.98), rgba(27, 110, 143, 0.95), rgba(10, 79, 111, 0.98)), url('assets/images/shakan global background image on background colour.jpeg');
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.3)), url('assets/images/shakan global background image on background colour.jpeg');
     background-size: cover;
     background-attachment: fixed;
     background-position: center;
@@ -280,7 +280,7 @@ nav.scrolled {
     animation: pulse-border 2s ease-in-out infinite;
     position: relative;
     overflow: hidden;
-    box-shadow: 0 15px 50px rgba(27, 110, 143, 0.3);
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4);
 }
 
 .event-banner::before {
@@ -630,8 +630,15 @@ section {
 }
 
 @keyframes glow-text {
-    0%, 100% { text-shadow: 0 0 20px rgba(240, 192, 64, 0.3); }
-    50% { text-shadow: 0 0 40px rgba(240, 192, 64, 0.6); }
+
+    0%,
+    100% {
+        text-shadow: 0 0 20px rgba(240, 192, 64, 0.3);
+    }
+
+    50% {
+        text-shadow: 0 0 40px rgba(240, 192, 64, 0.6);
+    }
 }
 
 .section-subtitle {

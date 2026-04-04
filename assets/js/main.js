@@ -417,157 +417,157 @@ class FormManager {
             } else {
                 this.clearFieldError(field);
             }
-    });
+        });
 
-    if (!isValid) {
-        this.showFormError('Please fill in all required fields');
-        return false;
+        if (!isValid) {
+            this.showFormError('Please fill in all required fields');
+            return false;
+        }
+
+        // Validate email
+        const emailField = form.querySelector('input[name="email"]');
+        if (emailField && !this.isValidEmail(emailField.value)) {
+            this.showFormError('Please enter a valid email address');
+            this.markFieldError(emailField);
+            return false;
+        }
+
+        // Sanitize inputs
+        fields.forEach((field) => {
+            field.value = this.sanitizeInput(field.value);
+        });
+
+        // Increment submission count
+        sessionStorage.setItem(ipKey, (parseInt(count, 10) + 1).toString());
+
+        this.showFormSuccess('Thank you! Your message has been received.');
+        return true;
     }
 
-    // Validate email
-    const emailField = form.querySelector('input[name="email"]');
-    if (emailField && !this.isValidEmail(emailField.value)) {
-        this.showFormError('Please enter a valid email address');
-        this.markFieldError(emailField);
-        return false;
+    sanitizeInput(input) {
+        return input
+            .replace(/[<>]/g, '') // Remove angle brackets
+            .trim();
     }
 
-    // Sanitize inputs
-    fields.forEach((field) => {
-        field.value = this.sanitizeInput(field.value);
-    });
-
-    // Increment submission count
-    sessionStorage.setItem(ipKey, (parseInt(count, 10) + 1).toString());
-
-    this.showFormSuccess('Thank you! Your message has been received.');
-    return true;
-}
-
-sanitizeInput(input) {
-    return input
-        .replace(/[<>]/g, '') // Remove angle brackets
-        .trim();
-}
-
-isValidEmail(email) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-}
-
-markFieldError(field) {
-    if (!field.classList.contains('error')) {
-        field.classList.add('error');
-        field.style.borderColor = '#F44336';
-        field.style.boxShadow = '0 0 15px rgba(244, 67, 54, 0.3)';
-    }
-}
-
-clearFieldError(field) {
-    field.classList.remove('error');
-    field.style.borderColor = 'var(--border-gold)';
-    field.style.boxShadow = 'none';
-}
-
-sendEmailNotification(form) {
-    // Get form data
-    const formData = {
-        name: form.querySelector('input[name="name"]')?.value || '',
-        email: form.querySelector('input[name="email"]')?.value || '',
-        subject: form.querySelector('select[name="subject"]')?.value || form.querySelector('input[name="subject"]')?.value || 'General Inquiry',
-        message: form.querySelector('textarea[name="message"]')?.value || form.querySelector('input[name="message"]')?.value || '',
-        country: form.querySelector('input[name="country"]')?.value || '',
-        heard: form.querySelector('select[name="heard"]')?.value || ''
-    };
-
-    // Prepare email template variables with Zoom link
-    const zoomLink = 'https://us06web.zoom.us/j/YOUR_ZOOM_ID'; // Replace with actual Zoom meeting ID
-    const emailParams = {
-        to_email: 'nicosaab19@gmail.com',
-        user_email: formData.email,
-        user_name: formData.name,
-        subject: formData.subject || 'Shakan Registration - Your Zoom Link Inside',
-        message: formData.message,
-        country: formData.country,
-        heard_from: formData.heard,
-        zoom_link: zoomLink,
-        registration_type: 'Worship Masterclass - How to Sing',
-        event_date: 'April 30, 2025 | 7:30 PM EAT',
-        registration_date: new Date().toLocaleString()
-    };
-
-    // Send via EmailJS (if configured) or use fallback
-    if (typeof emailjs !== 'undefined' && EMAILJS_CONFIG.publicKey !== 'your_emailjs_public_key_here') {
-        emailjs.send(EMAILJS_CONFIG.serviceID, EMAILJS_CONFIG.templateID, emailParams)
-            .then((response) => {
-                console.log('Email sent successfully!', response);
-                this.showFormSuccess(`✓ Thank you! Your registration is confirmed. Your Zoom link has been sent to ${emailParams.user_email}. Check your inbox!`);
-                form.reset();
-            })
-            .catch((error) => {
-                console.log('Email send failed:', error);
-                this.simulateEmailNotification(emailParams, form);
-            });
-    } else {
-        // Fallback: Simulate email notification
-        this.simulateEmailNotification(emailParams, form);
-    }
-}
-
-simulateEmailNotification(emailParams, form) {
-    // Simulate sending emails without backend
-    console.log('📧 EMAIL NOTIFICATION SENT TO: nicosaab19@gmail.com');
-    console.log('📧 EMAIL NOTIFICATION SENT TO:', emailParams.user_email);
-    console.log('Sender:', emailParams.user_name);
-    console.log('Subject:', emailParams.subject);
-    console.log('Message:', emailParams.message);
-    console.log('Country:', emailParams.country);
-    console.log('🔗 Zoom Link:', emailParams.zoom_link);
-    console.log('📅 Event:', emailParams.registration_type);
-    console.log('📅 Date:', emailParams.event_date);
-    console.log('Registered:', emailParams.registration_date);
-    console.log('---');
-
-    // Show success message with Zoom link info
-    this.showFormSuccess(`✓ Thank you ${emailParams.user_name.split(' ')[0]}! Your registration is confirmed. Your Zoom link has been sent to ${emailParams.user_email}. Check your inbox!`);
-    form.reset();
-}
-
-showFormSuccess(message) {
-    const form = document.querySelector('#contact-form');
-    if (!form) return;
-
-    const successDiv = form.querySelector('.form-success') || document.createElement('div');
-    successDiv.className = 'form-success';
-    successDiv.innerHTML = `${message}`;
-    successDiv.style.display = 'block';
-
-    if (!form.querySelector('.form-success')) {
-        form.insertBefore(successDiv, form.firstChild);
+    isValidEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
     }
 
-    setTimeout(() => {
-        successDiv.style.display = 'none';
-    }, 4000);
-}
-
-showFormError(message) {
-    const form = document.querySelector('#contact-form');
-    if (!form) return;
-
-    const errorDiv = form.querySelector('.form-error') || document.createElement('div');
-    errorDiv.className = 'form-error';
-    errorDiv.innerHTML = `✗ ${message}`;
-    errorDiv.style.display = 'block';
-
-    if (!form.querySelector('.form-error')) {
-        form.insertBefore(errorDiv, form.firstChild);
+    markFieldError(field) {
+        if (!field.classList.contains('error')) {
+            field.classList.add('error');
+            field.style.borderColor = '#F44336';
+            field.style.boxShadow = '0 0 15px rgba(244, 67, 54, 0.3)';
+        }
     }
 
-    setTimeout(() => {
-        errorDiv.style.display = 'none';
-    }, 4000);
-}
+    clearFieldError(field) {
+        field.classList.remove('error');
+        field.style.borderColor = 'var(--border-gold)';
+        field.style.boxShadow = 'none';
+    }
+
+    sendEmailNotification(form) {
+        // Get form data
+        const formData = {
+            name: form.querySelector('input[name="name"]')?.value || '',
+            email: form.querySelector('input[name="email"]')?.value || '',
+            subject: form.querySelector('select[name="subject"]')?.value || form.querySelector('input[name="subject"]')?.value || 'General Inquiry',
+            message: form.querySelector('textarea[name="message"]')?.value || form.querySelector('input[name="message"]')?.value || '',
+            country: form.querySelector('input[name="country"]')?.value || '',
+            heard: form.querySelector('select[name="heard"]')?.value || ''
+        };
+
+        // Prepare email template variables with Zoom link
+        const zoomLink = 'https://us06web.zoom.us/j/YOUR_ZOOM_ID'; // Replace with actual Zoom meeting ID
+        const emailParams = {
+            to_email: 'nicosaab19@gmail.com',
+            user_email: formData.email,
+            user_name: formData.name,
+            subject: formData.subject || 'Shakan Registration - Your Zoom Link Inside',
+            message: formData.message,
+            country: formData.country,
+            heard_from: formData.heard,
+            zoom_link: zoomLink,
+            registration_type: 'Worship Masterclass - How to Sing',
+            event_date: 'April 30, 2025 | 7:30 PM EAT',
+            registration_date: new Date().toLocaleString()
+        };
+
+        // Send via EmailJS (if configured) or use fallback
+        if (typeof emailjs !== 'undefined' && EMAILJS_CONFIG.publicKey !== 'your_emailjs_public_key_here') {
+            emailjs.send(EMAILJS_CONFIG.serviceID, EMAILJS_CONFIG.templateID, emailParams)
+                .then((response) => {
+                    console.log('Email sent successfully!', response);
+                    this.showFormSuccess(`✓ Thank you! Your registration is confirmed. Your Zoom link has been sent to ${emailParams.user_email}. Check your inbox!`);
+                    form.reset();
+                })
+                .catch((error) => {
+                    console.log('Email send failed:', error);
+                    this.simulateEmailNotification(emailParams, form);
+                });
+        } else {
+            // Fallback: Simulate email notification
+            this.simulateEmailNotification(emailParams, form);
+        }
+    }
+
+    simulateEmailNotification(emailParams, form) {
+        // Simulate sending emails without backend
+        console.log('📧 EMAIL NOTIFICATION SENT TO: nicosaab19@gmail.com');
+        console.log('📧 EMAIL NOTIFICATION SENT TO:', emailParams.user_email);
+        console.log('Sender:', emailParams.user_name);
+        console.log('Subject:', emailParams.subject);
+        console.log('Message:', emailParams.message);
+        console.log('Country:', emailParams.country);
+        console.log('🔗 Zoom Link:', emailParams.zoom_link);
+        console.log('📅 Event:', emailParams.registration_type);
+        console.log('📅 Date:', emailParams.event_date);
+        console.log('Registered:', emailParams.registration_date);
+        console.log('---');
+
+        // Show success message with Zoom link info
+        this.showFormSuccess(`✓ Thank you ${emailParams.user_name.split(' ')[0]}! Your registration is confirmed. Your Zoom link has been sent to ${emailParams.user_email}. Check your inbox!`);
+        form.reset();
+    }
+
+    showFormSuccess(message) {
+        const form = document.querySelector('#contact-form');
+        if (!form) return;
+
+        const successDiv = form.querySelector('.form-success') || document.createElement('div');
+        successDiv.className = 'form-success';
+        successDiv.innerHTML = `${message}`;
+        successDiv.style.display = 'block';
+
+        if (!form.querySelector('.form-success')) {
+            form.insertBefore(successDiv, form.firstChild);
+        }
+
+        setTimeout(() => {
+            successDiv.style.display = 'none';
+        }, 4000);
+    }
+
+    showFormError(message) {
+        const form = document.querySelector('#contact-form');
+        if (!form) return;
+
+        const errorDiv = form.querySelector('.form-error') || document.createElement('div');
+        errorDiv.className = 'form-error';
+        errorDiv.innerHTML = `✗ ${message}`;
+        errorDiv.style.display = 'block';
+
+        if (!form.querySelector('.form-error')) {
+            form.insertBefore(errorDiv, form.firstChild);
+        }
+
+        setTimeout(() => {
+            errorDiv.style.display = 'none';
+        }, 4000);
+    }
 }
 
 // ===== ACCORDION FUNCTIONALITY =====
