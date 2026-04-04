@@ -29,7 +29,8 @@
     --gradient-hero: linear-gradient(135deg, #0A0E2A 0%, #1E0A3C 35%, #0D1B4B 65%, #0A0E2A 100%);
     --gradient-gold: linear-gradient(135deg, #8B6000 0%, #C8960C 50%, #F0C040 100%);
     --gradient-fire: linear-gradient(180deg, #0B5C7E 0%, #1B7FA8 60%, #0A3D5C 100%);
-    --gradient-section: linear-gradient(180deg, #0A0E2A 0%, #0D1B4B 100%);
+    --gradient-section: linear-gradient(180deg, rgba(10, 14, 42, 0.92) 0%, rgba(13, 27, 75, 0.92) 100%), url('assets/images/shakan global background image on background colour.jpeg');
+    --bg-section-image: url('assets/images/shakan global background image on background colour.jpeg');
 
     --font-display: 'Cinzel Decorative', serif;
     --font-heading: 'Cinzel', serif;
@@ -54,7 +55,10 @@ html {
 
 body {
     font-family: var(--font-body);
-    background: var(--deep-navy);
+    background: linear-gradient(180deg, rgba(10, 14, 42, 0.95) 0%, rgba(13, 27, 75, 0.95) 100%), url('assets/images/shakan global background image on background colour.jpeg');
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
     color: var(--text-light);
     line-height: 1.6;
     letter-spacing: 0.3px;
@@ -264,15 +268,19 @@ nav.scrolled {
 
 /* ===== EVENT BANNER ===== */
 .event-banner {
-    background: linear-gradient(135deg, rgba(11, 92, 126, 0.95), rgba(27, 110, 143, 0.85), rgba(10, 79, 111, 0.9));
+    background: linear-gradient(135deg, rgba(11, 92, 126, 0.98), rgba(27, 110, 143, 0.95), rgba(10, 79, 111, 0.98)), url('assets/images/shakan global background image on background colour.jpeg');
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
     border: 2px solid var(--warm-amber);
-    border-radius: 12px;
-    padding: 2rem;
+    border-radius: 15px;
+    padding: 3rem 2rem;
     text-align: center;
     margin: 70px 2rem 1rem 2rem;
     animation: pulse-border 2s ease-in-out infinite;
     position: relative;
     overflow: hidden;
+    box-shadow: 0 15px 50px rgba(27, 110, 143, 0.3);
 }
 
 .event-banner::before {
@@ -491,8 +499,9 @@ nav.scrolled {
     font-weight: 700;
     position: relative;
     overflow: hidden;
-    box-shadow: 0 8px 30px rgba(200, 150, 12, 0.3);
+    box-shadow: 0 12px 40px rgba(200, 150, 12, 0.4);
     transition: var(--transition-smooth);
+    border: 2px solid var(--gold-primary);
 }
 
 .btn-primary::before {
@@ -603,6 +612,9 @@ nav.scrolled {
 section {
     padding: 5rem 2rem;
     position: relative;
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
 }
 
 .section-title {
@@ -613,7 +625,13 @@ section {
     margin-bottom: 1rem;
     text-transform: uppercase;
     letter-spacing: 2px;
-    text-shadow: 0 0 20px rgba(240, 192, 64, 0.2);
+    text-shadow: 0 0 30px rgba(240, 192, 64, 0.4), 0 2px 8px rgba(0, 0, 0, 0.5);
+    animation: glow-text 3s ease-in-out infinite;
+}
+
+@keyframes glow-text {
+    0%, 100% { text-shadow: 0 0 20px rgba(240, 192, 64, 0.3); }
+    50% { text-shadow: 0 0 40px rgba(240, 192, 64, 0.6); }
 }
 
 .section-subtitle {
@@ -637,13 +655,14 @@ section {
 /* ===== CARD STYLES / GLASSMORPHISM ===== */
 .card {
     background: var(--bg-card);
-    border: 1px solid var(--border-gold);
+    border: 2px solid var(--border-gold);
     border-radius: 15px;
-    padding: 2rem;
+    padding: 2.5rem;
     backdrop-filter: blur(10px);
     transition: var(--transition-smooth);
     position: relative;
     overflow: hidden;
+    box-shadow: 0 8px 32px rgba(200, 150, 12, 0.15);
 }
 
 .card::before {
@@ -660,9 +679,9 @@ section {
 }
 
 .card:hover {
-    transform: translateY(-8px);
-    border-color: var(--gold-primary);
-    box-shadow: 0 20px 50px rgba(200, 150, 12, 0.2);
+    transform: translateY(-12px);
+    border-color: var(--gold-light);
+    box-shadow: 0 25px 60px rgba(200, 150, 12, 0.35);
 }
 
 .card:hover::before {
@@ -835,7 +854,10 @@ section {
 
 /* ===== FOOTER ===== */
 footer {
-    background: var(--deep-navy);
+    background: linear-gradient(180deg, rgba(10, 14, 42, 0.95) 0%, rgba(13, 27, 75, 0.95) 100%), url('assets/images/shakan global background image on background colour.jpeg');
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
     border-top: 2px solid var(--gold-primary);
     padding: 4rem 2rem 2rem;
     margin-top: 5rem;

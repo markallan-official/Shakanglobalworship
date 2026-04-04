@@ -363,54 +363,60 @@ class FormManager {
             this.formSubmitTime = Date.now();
         }, true);
 
+        // Character counter
+        const textarea = form.querySelector('textarea[name="message"]');
+        const counter = form.querySelector('.char-counter');
+        if (textarea && counter) {
+            const maxLength = parseInt(textarea.getAttribute('maxlength'), 10);
+            textarea.addEventListener('input', () => {
+                counter.textContent = `${textarea.value.length} / ${maxLength}`;
+            });
+        }
+
         form.addEventListener('submit', (e) => {
             e.preventDefault();
             if (this.validateForm(form)) {
                 this.sendEmailNotification(form);
-                const counter = form.querySelector('.char-counter');
-                if (counter) {
-                    counter.textContent = `${textarea.value.length} / ${maxLength}`;
-                }
-            });
-    }
-}
-
-validateForm(form) {
-    // Check honeypot
-    const honeypot = form.querySelector('input[name="website"]');
-    if (honeypot && honeypot.value) {
-        console.warn('Security: Honeypot field filled (bot detected)');
-        return false;
+            }
+        });
     }
 
-    // Check submission time (must be > 3 seconds)
-    const submissionTime = Date.now() - this.formSubmitTime;
-    if (submissionTime < 3000) {
-        console.warn('Security: Form submitted too quickly');
-        this.showFormError('Please take a moment before submitting');
-        return false;
-    }
-
-    // Rate limiting
-    const ipKey = 'form-submission-count';
-    const count = sessionStorage.getItem(ipKey) || 0;
-    if (parseInt(count, 10) >= 3) {
-        console.warn('Security: Form submission rate limit exceeded');
-        this.showFormError('Too many submissions. Please try again later.');
-        return false;
-    }
-
-    // Validate required fields
-    const fields = form.querySelectorAll('input[required], textarea[required], select[required]');
-    let isValid = true;
-
-    fields.forEach((field) => {
-        if (!field.value.trim()) {
-            isValid = false;
-            this.markFieldError(field);
-        } else {
-            this.clearFieldError(field);
+    validateForm(form) {
+        // Check honeypot
+        const honeypot = form.querySelector('input[name="website"]');
+        if (honeypot && honeypot.value) {
+            console.warn('Security: Honeypot field filled (bot detected)');
+            return false;
         }
+
+        // Check submission time (must be > 3 seconds)
+        const submissionTime = Date.now() - this.formSubmitTime;
+        if (submissionTime < 3000) {
+            console.warn('Security: Form submitted too quickly');
+            this.showFormError('Please take a moment before submitting');
+            return false;
+        }
+
+        // Rate limiting
+        const ipKey = 'form-submission-count';
+        const count = sessionStorage.getItem(ipKey) || 0;
+        if (parseInt(count, 10) >= 3) {
+            console.warn('Security: Form submission rate limit exceeded');
+            this.showFormError('Too many submissions. Please try again later.');
+            return false;
+        }
+
+        // Validate required fields
+        const fields = form.querySelectorAll('input[required], textarea[required], select[required]');
+        let isValid = true;
+
+        fields.forEach((field) => {
+            if (!field.value.trim()) {
+                isValid = false;
+                this.markFieldError(field);
+            } else {
+                this.clearFieldError(field);
+            }
     });
 
     if (!isValid) {
@@ -474,15 +480,20 @@ sendEmailNotification(form) {
         heard: form.querySelector('select[name="heard"]')?.value || ''
     };
 
-    // Prepare email template variables
+    // Prepare email template variables with Zoom link
+    const zoomLink = 'https://us06web.zoom.us/j/YOUR_ZOOM_ID'; // Replace with actual Zoom meeting ID
     const emailParams = {
         to_email: 'nicosaab19@gmail.com',
         user_email: formData.email,
         user_name: formData.name,
-        subject: formData.subject || 'Shakan Registration',
+        subject: formData.subject || 'Shakan Registration - Your Zoom Link Inside',
         message: formData.message,
         country: formData.country,
-        heard_from: formData.heard
+        heard_from: formData.heard,
+        zoom_link: zoomLink,
+        registration_type: 'Worship Masterclass - How to Sing',
+        event_date: 'April 30, 2025 | 7:30 PM EAT',
+        registration_date: new Date().toLocaleString()
     };
 
     // Send via EmailJS (if configured) or use fallback
@@ -490,7 +501,7 @@ sendEmailNotification(form) {
         emailjs.send(EMAILJS_CONFIG.serviceID, EMAILJS_CONFIG.templateID, emailParams)
             .then((response) => {
                 console.log('Email sent successfully!', response);
-                this.showFormSuccess('✓ Thank you! We\'ve received your message. Check your inbox for confirmation!');
+                this.showFormSuccess(`✓ Thank you! Your registration is confirmed. Your Zoom link has been sent to ${emailParams.user_email}. Check your inbox!`);
                 form.reset();
             })
             .catch((error) => {
@@ -511,10 +522,14 @@ simulateEmailNotification(emailParams, form) {
     console.log('Subject:', emailParams.subject);
     console.log('Message:', emailParams.message);
     console.log('Country:', emailParams.country);
+    console.log('🔗 Zoom Link:', emailParams.zoom_link);
+    console.log('📅 Event:', emailParams.registration_type);
+    console.log('📅 Date:', emailParams.event_date);
+    console.log('Registered:', emailParams.registration_date);
     console.log('---');
 
-    // Show success message
-    this.showFormSuccess('✓ Thank you! Your registration has been received. Check your inbox for confirmation!');
+    // Show success message with Zoom link info
+    this.showFormSuccess(`✓ Thank you ${emailParams.user_name.split(' ')[0]}! Your registration is confirmed. Your Zoom link has been sent to ${emailParams.user_email}. Check your inbox!`);
     form.reset();
 }
 
