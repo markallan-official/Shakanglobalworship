@@ -268,7 +268,7 @@ nav.scrolled {
 
 /* ===== EVENT BANNER ===== */
 .event-banner {
-    background: linear-gradient(135deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.3)), url('assets/images/shakan global background image on background colour.jpeg');
+    background: url('assets/images/shakan global background image on background colour.jpeg');
     background-size: cover;
     background-attachment: fixed;
     background-position: center;
@@ -290,8 +290,8 @@ nav.scrolled {
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(45deg, transparent 30%, rgba(100, 200, 255, 0.1) 50%, transparent 70%);
-    animation: shimmer 3s infinite;
+    background: rgba(0, 0, 0, 0.15);
+    z-index: 1;
 }
 
 .event-banner-content {
