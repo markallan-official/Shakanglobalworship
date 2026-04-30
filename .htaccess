@@ -1,0 +1,85 @@
+# .htaccess - Shakan Global Worship Security Configuration
+# Apache Server Configuration for Enhanced Security
+
+# Disable directory listing
+Options -Indexes
+
+# Hide server signature
+ServerSignature Off
+
+# Enable GZIP compression
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/json
+</IfModule>
+
+# Set security headers
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set X-XSS-Protection "1; mode=block"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; frame-src https://us06web.zoom.us; media-src 'self';"
+  Header always set Cache-Control "no-store, no-cache, must-revalidate"
+  Header always set Pragma "no-cache"
+  Header always set Expires "0"
+</IfModule>
+
+# Force HTTPS redirect
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{HTTPS} off
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+  
+  # Remove trailing slashes
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^(.*)/$ /$1 [L,R=301]
+  
+  # Route 404 to 404.html
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^ 404.html [L]
+</IfModule>
+
+# Block dangerous file types
+<FilesMatch "\.(bak|config|sql|fla|inc|ini|log|sh|sql|swp|tar|gz|zip|rb|exe|dll|php|asp|aspx|jsp)$">
+  Order Allow,Deny
+  Deny from all
+</FilesMatch>
+
+# Cache static assets
+<FilesMatch "\.(jpg|jpeg|png|gif|ico|css|js|svg|webp)$">
+  <IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresDefault "access plus 30 days"
+  </IfModule>
+  <IfModule mod_headers.c>
+    Header set Cache-Control "max-age=2592000, public"
+  </IfModule>
+</FilesMatch>
+
+# HTML cache (shorter)
+<FilesMatch "\.(html|htm)$">
+  <IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresDefault "access plus 1 hour"
+  </IfModule>
+  <IfModule mod_headers.c>
+    Header set Cache-Control "max-age=3600, public"
+  </IfModule>
+</FilesMatch>
+
+# Prevent access to sensitive files
+<FilesMatch "^\.">
+  Order Allow,Deny
+  Deny from all
+</FilesMatch>
+
+# Set proper MIME types
+AddType image/svg+xml .svg
+AddType application/json .json
+AddEncoding gzip .js .css
+
+# Default UTF-8 encoding
+AddDefaultCharset UTF-8

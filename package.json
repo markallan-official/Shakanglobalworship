@@ -1,0 +1,21 @@
+{
+    "name": "shakan-global-worship",
+    "version": "1.0.0",
+    "description": "Shakan Global Worship - Vocal Training Website",
+    "main": "index.html",
+    "scripts": {
+        "dev": "http-server -p 8000 -o",
+        "start": "http-server -p 8000",
+        "build": "echo 'Static site - no build needed'"
+    },
+    "keywords": [
+        "worship",
+        "vocal training",
+        "singing lessons"
+    ],
+    "author": "Shakan Global Worship",
+    "license": "MIT",
+    "devDependencies": {
+        "http-server": "^14.1.1"
+    }
+}
